@@ -18,6 +18,7 @@ include(ImmerUtils)
 #  Options
 #  =======
 
+option(ENABLE_TESTS "compile with tests, docs, benchmarks" on)
 option(ENABLE_SANITIZE "compile with sanitizers enabled")
 option(ENABLE_COVERAGE "compile with test coverage support")
 option(DISABLE_WERROR "enable --werror")
@@ -100,17 +101,19 @@ endif()
 #  Testing
 #  =======
 
-enable_testing()
+if (ENABLE_TESTS)
+  enable_testing()
 
-add_custom_target(check
-  COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  COMMENT "Build and run all the tests and examples.")
+  add_custom_target(check
+    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Build and run all the tests and examples.")
 
-add_subdirectory(test)
-add_subdirectory(benchmark)
-add_subdirectory(example)
-add_subdirectory(doc)
-add_subdirectory(extra/fuzzer)
-add_subdirectory(extra/python)
-add_subdirectory(extra/guile)
+  add_subdirectory(test)
+  add_subdirectory(benchmark)
+  add_subdirectory(example)
+  add_subdirectory(doc)
+  add_subdirectory(extra/fuzzer)
+  add_subdirectory(extra/python)
+  add_subdirectory(extra/guile)
+endif()
